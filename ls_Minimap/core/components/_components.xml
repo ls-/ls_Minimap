@@ -1,0 +1,6 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="coords.lua"/>
+	<Script file="daytime.lua"/>
+	<Script file="flag.lua"/>
+	<Script file="minimap.lua"/>
+</Ui>

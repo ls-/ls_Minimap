@@ -116,27 +116,16 @@ do
 		return self.r, self.g, self.b, a or self.a
 	end
 
-	-- override ColorMixin:SetRGBA
-	function color_proto:SetRGBA(r, g, b, a)
+	function addon:CreateColor(r, g, b, a)
 		if r > 1 or g > 1 or b > 1 then
 			r, g, b = r / 255, g / 255, b / 255
 		end
 
-		self.r = r
-		self.g = g
-		self.b = b
-		self.a = a
-		self.hex = s_format('ff%02x%02x%02x', self:GetRGBAsBytes())
-	end
-
-	-- override ColorMixin:WrapTextInColorCode
-	function color_proto:WrapTextInColorCode(text)
-		return "|c" .. self.hex .. text .. "|r"
-	end
-
-	function addon:CreateColor(r, g, b, a)
 		local color = Mixin({}, ColorMixin, color_proto)
 		color:SetRGBA(r, g, b, a)
+
+		-- do not override SetRGBA, so calculate hex separately
+		color.hex = color:GenerateHexColor()
 
 		return color
 	end

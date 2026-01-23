@@ -110,6 +110,22 @@ function addon:CreateEditModeConfig()
 		addon.Coords:SetPoint(layout.coords.point[1], layout.coords.point[2])
 	end)
 
+	LEM:RegisterCallback("create", function(newLayoutName, _, sourceLayoutName)
+		if sourceLayoutName then
+			addon:CopyTable(C.db.profile.layouts[sourceLayoutName], C.db.profile.layouts[newLayoutName])
+		end
+	end)
+
+	LEM:RegisterCallback("delete", function(oldLayoutName)
+		C.db.profile.layouts[oldLayoutName] = nil
+	end)
+
+	LEM:RegisterCallback("rename", function(oldLayoutName, newLayoutName)
+		addon:CopyTable(C.db.profile.layouts[oldLayoutName], C.db.profile.layouts[newLayoutName])
+
+		C.db.profile.layouts[oldLayoutName] = nil
+	end)
+
 	LEM:AddSystemSettings(Enum.EditModeSystem.Minimap, {
 		{
 			name = _G.HUD_EDIT_MODE_SETTING_MINIMAP_SIZE,

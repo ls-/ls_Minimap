@@ -17,6 +17,7 @@ L["INFO"] = D.global.colors.addon:WrapTextInColorCode(_G.INFO)
 L["AUTO_ZOOM_OUT"] = "Auto Zoom Out"
 L["CHANGELOG"] = "Changelog"
 L["CHANGELOG_FULL"] = "Full"
+L["COLLAPSE_OPTIONS"] = "Collapse Options"
 L["COLORED_BORDER"] = "Colored Border"
 L["COORDS"] = "Coordinates"
 L["DOWNLOADS"] = "Downloads"

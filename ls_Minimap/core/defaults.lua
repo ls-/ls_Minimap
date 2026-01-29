@@ -5,7 +5,7 @@ local C, D, L = addon.C, addon.D, addon.L
 local _G = getfenv(0)
 
 -- Mine
-local LEM = LibStub("LibEditMode")
+local LEM = LibStub("LibEditMode-ls", true) or LibStub("LibEditMode")
 
 function addon:GetLayout()
 	return C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"]
@@ -27,6 +27,9 @@ D.global = {
 		friendly = rgb(26, 255, 26), -- #1AFF1A (Blizzard Colour)
 		hostile = rgb(255, 26, 26), -- #FF1A1A (Blizzard Colour)
 		sanctuary = rgb(105, 204, 240) -- #68CCEF (Blizzard Colour)
+	},
+	settings = { -- used by expanders
+		coords = false,
 	},
 }
 

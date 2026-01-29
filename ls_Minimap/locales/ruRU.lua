@@ -12,6 +12,7 @@ if GetLocale() ~= "ruRU" then return end
 L["AUTO_ZOOM_OUT"] = "Авто-отдаление"
 L["CHANGELOG"] = "Список изменений"
 L["CHANGELOG_FULL"] = "Полный"
+L["COLLAPSE_OPTIONS"] = "Свернуть настройки"
 L["COLORED_BORDER"] = "Цветная граница"
 L["COORDS"] = "Координаты"
 L["DOWNLOADS"] = "Загрузки"

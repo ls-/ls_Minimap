@@ -9,7 +9,7 @@ local next = _G.next
 local s_format = _G.string.format
 
 -- Mine
-local LEM = LibStub("LibEditMode")
+local LEM = LibStub("LibEditMode-ls", true) or LibStub("LibEditMode")
 
 -- move these elsehwere
 local CL_LINK = "https://github.com/ls-/ls_Minimap/blob/master/CHANGELOG.md"
@@ -110,6 +110,22 @@ function addon:CreateEditModeConfig()
 		addon.Coords:SetPoint(layout.coords.point[1], layout.coords.point[2])
 	end)
 
+	LEM:RegisterCallback("create", function(newLayoutName, _, sourceLayoutName)
+		if sourceLayoutName then
+			addon:CopyTable(C.db.profile.layouts[sourceLayoutName], C.db.profile.layouts[newLayoutName])
+		end
+	end)
+
+	LEM:RegisterCallback("delete", function(oldLayoutName)
+		C.db.profile.layouts[oldLayoutName] = nil
+	end)
+
+	LEM:RegisterCallback("rename", function(oldLayoutName, newLayoutName)
+		addon:CopyTable(C.db.profile.layouts[oldLayoutName], C.db.profile.layouts[newLayoutName])
+
+		C.db.profile.layouts[oldLayoutName] = nil
+	end)
+
 	LEM:AddSystemSettings(Enum.EditModeSystem.Minimap, {
 		{
 			name = _G.HUD_EDIT_MODE_SETTING_MINIMAP_SIZE,
@@ -193,10 +209,17 @@ function addon:CreateEditModeConfig()
 		{
 			name = L["COORDS"],
 			kind = LEM.SettingType.Divider,
+			-- hideLabel = true,
+			hidden = function()
+				return not C.db.global.settings.coords
+			end,
 		},
 		{
 			name = _G.ENABLE,
 			kind = LEM.SettingType.Checkbox,
+			hidden = function()
+				return not C.db.global.settings.coords
+			end,
 			default = D.profile.layouts["*"].coords.enabled,
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].coords.enabled
@@ -222,6 +245,9 @@ function addon:CreateEditModeConfig()
 		{
 			name = _G.BACKGROUND,
 			kind = LEM.SettingType.Checkbox,
+			hidden = function()
+				return not C.db.global.settings.coords
+			end,
 			disabled = not C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"].coords.enabled,
 			default = D.profile.layouts["*"].coords.background,
 			get = function(layoutName)
@@ -238,6 +264,9 @@ function addon:CreateEditModeConfig()
 		{
 			name = L["X_OFFSET"],
 			kind = LEM.SettingType.Slider,
+			hidden = function()
+				return not C.db.global.settings.coords
+			end,
 			disabled = not C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"].coords.enabled,
 			default = D.profile.layouts["*"].coords.point[1],
 			get = function(layoutName)
@@ -257,6 +286,9 @@ function addon:CreateEditModeConfig()
 		{
 			name = L["Y_OFFSET"],
 			kind = LEM.SettingType.Slider,
+			hidden = function()
+				return not C.db.global.settings.coords
+			end,
 			disabled = not C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"].coords.enabled,
 			default = D.profile.layouts["*"].coords.point[2],
 			get = function(layoutName)
@@ -272,6 +304,22 @@ function addon:CreateEditModeConfig()
 			minValue = -192,
 			maxValue = 192,
 			valueStep = 1,
+		},
+		{
+			name = "DNT Coords Settings Expander",
+			kind = LEM.SettingType.Expander,
+			expandedLabel = L["COLLAPSE_OPTIONS"],
+			collapsedLabel = L["COORDS"],
+			appendArrow = true,
+			default = function()
+				return D.global.settings.coords
+			end,
+			get = function()
+				return C.db.global.settings.coords
+			end,
+			set = function(_, value)
+				C.db.global.settings.coords = value
+			end,
 		},
 	})
 end

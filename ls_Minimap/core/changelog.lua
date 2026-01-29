@@ -6,5 +6,5 @@ local _G = getfenv(0)
 
 -- Mine
 addon.CHANGELOG = [[
-- Release released.
+- Added proper handling of Edit Mode layout copying, deletion, and renaming.
 ]]

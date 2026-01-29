@@ -9,6 +9,8 @@ local next = _G.next
 local unpack = _G.unpack
 
 -- Mine
+local LOCAL_FRAME = CopyTable(GetFrameMetatable().__index)
+
 local MINIMAP_INFO = {
 	[100] = {
 		{1 / 1024, 433 / 1024, 1 / 512, 433 / 512}, -- outer
@@ -101,12 +103,10 @@ function addon.Minimap:Create()
 		C_AddOns.LoadAddOn("Blizzard_TimeManager")
 	end
 
-	hooksecurefunc(MinimapCluster, "SetSize", function(_, _, _, shouldIgnore)
-		if not shouldIgnore then
-			local info = MINIMAP_INFO[addon:GetLayout().size]
+	hooksecurefunc(MinimapCluster, "SetSize", function()
+		local info = MINIMAP_INFO[addon:GetLayout().size]
 
-			MinimapCluster:SetSize(info[3] + 24, info[3] + 24, true)
-		end
+		LOCAL_FRAME.SetSize(MinimapCluster, info[3] + 24, info[3] + 24)
 	end)
 
 	Mixin(Minimap, minimap_proto)
@@ -281,7 +281,7 @@ function addon.Minimap:UpdateLayout(size, shape)
 		GetMinimapShape = theBodyIsSquare
 	end
 
-	MinimapCluster:SetSize(info[3] + 24, info[3] + 24, true)
+	LOCAL_FRAME.SetSize(MinimapCluster, info[3] + 24, info[3] + 24)
 
 	Minimap:SetSize(info[3] - 22, info[3] - 22)
 	Minimap:ClearAllPoints()

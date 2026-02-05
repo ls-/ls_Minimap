@@ -311,9 +311,7 @@ function addon:CreateEditModeConfig()
 			expandedLabel = L["COLLAPSE_OPTIONS"],
 			collapsedLabel = L["COORDS"],
 			appendArrow = true,
-			default = function()
-				return D.global.settings.coords
-			end,
+			default = D.global.settings.coords,
 			get = function()
 				return C.db.global.settings.coords
 			end,

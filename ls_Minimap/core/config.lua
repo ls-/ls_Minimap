@@ -248,7 +248,9 @@ function addon:CreateEditModeConfig()
 			hidden = function()
 				return not C.db.global.settings.coords
 			end,
-			disabled = not C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"].coords.enabled,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].coords.enabled
+			end,
 			default = D.profile.layouts["*"].coords.background,
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].coords.background
@@ -267,7 +269,9 @@ function addon:CreateEditModeConfig()
 			hidden = function()
 				return not C.db.global.settings.coords
 			end,
-			disabled = not C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"].coords.enabled,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].coords.enabled
+			end,
 			default = D.profile.layouts["*"].coords.point[1],
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].coords.point[1]
@@ -289,7 +293,9 @@ function addon:CreateEditModeConfig()
 			hidden = function()
 				return not C.db.global.settings.coords
 			end,
-			disabled = not C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"].coords.enabled,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].coords.enabled
+			end,
 			default = D.profile.layouts["*"].coords.point[2],
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].coords.point[2]

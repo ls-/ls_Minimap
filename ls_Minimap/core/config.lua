@@ -483,7 +483,7 @@ do
 
 		supportContainer:MarkDirty()
 
-		local category = Settings.RegisterCanvasLayoutCategory(panel, L["LS_MINIMAP"])
+		local category = Settings.RegisterCanvasLayoutCategory(panel, L["LS_ADDON"])
 
 		Settings.RegisterAddOnCategory(category)
 

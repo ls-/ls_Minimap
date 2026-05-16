@@ -6,6 +6,8 @@
 ## IconTexture: Interface\AddOns\ls_Minimap\assets\logo-64
 ## SavedVariables: LS_MINIMAP_GLOBAL_CONFIG
 
+## X-Curse-Project-ID: 1439406
+
 embeds\_embeds.xml
 core\_core.xml
 locales\_locales.xml

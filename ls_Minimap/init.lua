@@ -52,7 +52,7 @@ addon:RegisterEvent("ADDON_LOADED", function(arg1)
 	addon:CreateEditModeConfig()
 
 	AddonCompartmentFrame:RegisterAddon({
-		text = L["LS_ADDON"],
+		text = L["ADDON_NAME"],
 		icon = "Interface\\AddOns\\ls_Minimap\\assets\\logo-32",
 		func = function()
 			addon:OpenBlizzConfig()

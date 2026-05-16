@@ -6,4 +6,6 @@ local L = addon.L
 -- Lua
 local _G = getfenv(0)
 
-if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
+if GetLocale() ~= "esES" then return end
+
+L["EXPORT"] = "Exportar"

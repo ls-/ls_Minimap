@@ -1,4 +1,4 @@
-local _, addon = ...
+local addonName, addon = ...
 local C, D, L = addon.C, addon.D, addon.L
 
 -- Lua
@@ -97,7 +97,7 @@ do
 end
 
 function addon:CreateEditModeConfig()
-	LEM:RegisterCallback("layout", function(layoutName)
+	local function layoutCallback(layoutName)
 		-- AceDB takes care of layout table duplication
 		local layout = C.db.profile.layouts[layoutName]
 
@@ -108,7 +108,12 @@ function addon:CreateEditModeConfig()
 		addon.Coords:Enable(layout.coords.enabled)
 		addon.Coords:EnableBackground(layout.coords.background)
 		addon.Coords:SetPoint(layout.coords.point[1], layout.coords.point[2])
-	end)
+	end
+
+	function addon:UpdateLayoutSettings()
+		layoutCallback(LEM:GetActiveLayoutName())
+	end
+	LEM:RegisterCallback("layout", layoutCallback)
 
 	LEM:RegisterCallback("create", function(newLayoutName, _, sourceLayoutName)
 		if sourceLayoutName then
@@ -248,7 +253,9 @@ function addon:CreateEditModeConfig()
 			hidden = function()
 				return not C.db.global.settings.coords
 			end,
-			disabled = not C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"].coords.enabled,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].coords.enabled
+			end,
 			default = D.profile.layouts["*"].coords.background,
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].coords.background
@@ -267,7 +274,9 @@ function addon:CreateEditModeConfig()
 			hidden = function()
 				return not C.db.global.settings.coords
 			end,
-			disabled = not C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"].coords.enabled,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].coords.enabled
+			end,
 			default = D.profile.layouts["*"].coords.point[1],
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].coords.point[1]
@@ -289,7 +298,9 @@ function addon:CreateEditModeConfig()
 			hidden = function()
 				return not C.db.global.settings.coords
 			end,
-			disabled = not C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"].coords.enabled,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].coords.enabled
+			end,
 			default = D.profile.layouts["*"].coords.point[2],
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].coords.point[2]
@@ -311,9 +322,7 @@ function addon:CreateEditModeConfig()
 			expandedLabel = L["COLLAPSE_OPTIONS"],
 			collapsedLabel = L["COORDS"],
 			appendArrow = true,
-			default = function()
-				return D.global.settings.coords
-			end,
+			default = D.global.settings.coords,
 			get = function()
 				return C.db.global.settings.coords
 			end,
@@ -429,7 +438,7 @@ do
 		downloadContainer:AddButton("Interface\\AddOns\\ls_Minimap\\assets\\curseforge-64", L["CURSEFORGE"], CURSE_LINK)
 		downloadContainer:AddButton("Interface\\AddOns\\ls_Minimap\\assets\\wago-64", L["WAGO"], WAGO_LINK)
 
-		local changelogHeader = createHeader(panel, s_format("%s |H%s|h[|c%s%s|r]|h",  L["CHANGELOG"], CL_LINK, D.global.colors.addon:GetHex(), L["CHANGELOG_FULL"]))
+		local changelogHeader = createHeader(panel, s_format("%s |H%s|h[|c%s%s|r]|h", L["CHANGELOG"], CL_LINK, D.global.colors.addon:GetHex(), L["CHANGELOG_FULL"]))
 		changelogHeader:SetPoint("TOP", downloadContainer, "BOTTOM", 0, 8)
 		changelogHeader:SetPoint("LEFT")
 		changelogHeader:SetPoint("RIGHT")
@@ -478,14 +487,54 @@ do
 		changelog:SetText(addon.CHANGELOG)
 
 		supportContainer:MarkDirty()
+		downloadContainer:MarkDirty()
 
-		local category = Settings.RegisterCanvasLayoutCategory(panel, L["LS_MINIMAP"])
+		local category = Settings.RegisterCanvasLayoutCategory(panel, L["ADDON_NAME"])
 
 		Settings.RegisterAddOnCategory(category)
+
+		function addon:GetBlizzCategory()
+			return category
+		end
 
 		function addon:OpenBlizzConfig()
 			Settings.OpenToCategory(category:GetID())
 		end
 	end
+end
 
+do
+	function addon:CreateAceConfig()
+		C.options = {
+			type = "group",
+			name = s_format("%s |cffcacaca(%s)|r", L["ADDON_NAME"], addon.VER.string),
+			args = {},
+		}
+
+		LibStub("AceConfig-3.0"):RegisterOptionsTable(addonName, C.options)
+
+		C.options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(C.db, true)
+		C.options.args.profiles.order = 100
+		C.options.args.profiles.inline = true
+		C.options.args.profiles.desc = nil
+		C.options.args.profiles.hidden = function()
+			return not SettingsPanel:IsShown()
+		end
+
+		C.options.args.profiles.args.spacer_1 = {
+			order = 100,
+			type = "description",
+			name = " ",
+		}
+
+		C.options.args.profiles.args.importexport = {
+			order = 110,
+			type = "execute",
+			name = s_format("%s / %s", L["IMPORT"], L["EXPORT"]),
+			func = addon.OpenImportExport,
+			width = "full",
+		}
+
+		LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addonName, C.options.args.profiles.name, addon:GetBlizzCategory():GetID(), "profiles")
+	end
 end

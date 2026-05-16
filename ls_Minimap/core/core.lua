@@ -4,8 +4,10 @@ local _, addon = ...
 local _G = getfenv(0)
 local error = _G.error
 local next= _G.next
+local pairs = _G.pairs
 local pcall = _G.pcall
 local s_format = _G.string.format
+local setmetatable = _G.setmetatable
 local t_insert = _G.table.insert
 local type = _G.type
 
@@ -151,4 +153,45 @@ function addon:CopyTable(src, dest, ignore)
 	end
 
 	return dest
+end
+
+-- a copy of removeDefaults from AceDB-3.0
+function addon:DiffTable(dest, src, blocker)
+	setmetatable(dest, nil)
+
+	for k, v in pairs(src) do
+		if k == "*" or k == "**" then
+			if type(v) == "table" then
+				for key, value in pairs(dest) do
+					if type(value) == "table" then
+						if src[key] == nil and (not blocker or blocker[key] == nil) then
+							addon:DiffTable(value, v)
+
+							if next(value) == nil then
+								dest[key] = nil
+							end
+						elseif k == "**" then
+							addon:DiffTable(value, v, src[key])
+						end
+					end
+				end
+			elseif k == "*" then
+				for key, value in pairs(dest) do
+					if src[key] == nil and v == value then
+						dest[key] = nil
+					end
+				end
+			end
+		elseif type(v) == "table" and type(dest[k]) == "table" then
+			addon:DiffTable(dest[k], v, blocker and blocker[k])
+
+			if next(dest[k]) == nil then
+				dest[k] = nil
+			end
+		else
+			if dest[k] == src[k] and (not blocker or blocker[k] == nil) then
+				dest[k] = nil
+			end
+		end
+	end
 end

@@ -5,13 +5,15 @@ local C, D, L = addon.C, addon.D, addon.L
 local _G = getfenv(0)
 
 -- Mine
-L["LS_MINIMAP"] = ("LS: |c%sMinimap|r"):format(D.global.colors.addon:GetHex())
+L["ADDON_NAME"] = ("LS: |c%sMinimap|r"):format(D.global.colors.addon:GetHex())
 L["CURSEFORGE"] = "CurseForge"
 L["DISCORD"] = "Discord"
 L["GITHUB"] = "GitHub"
 L["WAGO"] = "Wago"
 L["WOWINTERFACE"] = "WoWInterface"
 L["INFO"] = D.global.colors.addon:WrapTextInColorCode(_G.INFO)
+
+L["IMPORT"] = _G.HUD_EDIT_MODE_IMPORT_LAYOUT
 
 -- Require translation
 L["AUTO_ZOOM_OUT"] = "Auto Zoom Out"
@@ -21,6 +23,7 @@ L["COLLAPSE_OPTIONS"] = "Collapse Options"
 L["COLORED_BORDER"] = "Colored Border"
 L["COORDS"] = "Coordinates"
 L["DOWNLOADS"] = "Downloads"
+L["EXPORT"] = "Export"
 L["LINK_COPY_SUCCESS"] = "Link Copied to Clipboard"
 L["ROUND"] = "Round"
 L["SHAPE"] = "Shape"

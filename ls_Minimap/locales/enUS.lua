@@ -13,6 +13,8 @@ L["WAGO"] = "Wago"
 L["WOWINTERFACE"] = "WoWInterface"
 L["INFO"] = D.global.colors.addon:WrapTextInColorCode(_G.INFO)
 
+L["IMPORT"] = _G.HUD_EDIT_MODE_IMPORT_LAYOUT
+
 -- Require translation
 L["AUTO_ZOOM_OUT"] = "Auto Zoom Out"
 L["CHANGELOG"] = "Changelog"
@@ -21,6 +23,7 @@ L["COLLAPSE_OPTIONS"] = "Collapse Options"
 L["COLORED_BORDER"] = "Colored Border"
 L["COORDS"] = "Coordinates"
 L["DOWNLOADS"] = "Downloads"
+L["EXPORT"] = "Export"
 L["LINK_COPY_SUCCESS"] = "Link Copied to Clipboard"
 L["ROUND"] = "Round"
 L["SHAPE"] = "Shape"

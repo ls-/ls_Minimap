@@ -11,6 +11,16 @@ addon.VER = {}
 addon.VER.string = C_AddOns.GetAddOnMetadata(addonName, "Version")
 addon.VER.number = tonumber(addon.VER.string:gsub("%D", ""), nil)
 
+local function updateCallback()
+	addon.Flag:Update()
+
+	addon:UpdateLayoutSettings()
+end
+
+local function shutdownCallback()
+	C.db.profile.version = addon.VER.number
+end
+
 addon:RegisterEvent("ADDON_LOADED", function(arg1)
 	if arg1 ~= addonName then return end
 
@@ -46,10 +56,18 @@ addon:RegisterEvent("ADDON_LOADED", function(arg1)
 	end
 
 	C.db = LibStub("AceDB-3.0"):New("LS_MINIMAP_GLOBAL_CONFIG", D, true)
+	C.db:RegisterCallback("OnProfileChanged", updateCallback)
+	C.db:RegisterCallback("OnProfileCopied", updateCallback)
+	C.db:RegisterCallback("OnProfileReset", updateCallback)
+	C.db:RegisterCallback("OnProfileShutdown", shutdownCallback)
+	C.db:RegisterCallback("OnDatabaseShutdown", shutdownCallback)
 
 	addon.Minimap:Create()
 
+	addon:CreateImportExport()
 	addon:CreateEditModeConfig()
+	addon:CreateBlizzConfig()
+	addon:CreateAceConfig()
 
 	AddonCompartmentFrame:RegisterAddon({
 		text = L["ADDON_NAME"],
@@ -66,8 +84,6 @@ addon:RegisterEvent("ADDON_LOADED", function(arg1)
 			addon:OpenBlizzConfig()
 		end
 	end
-
-	addon:CreateBlizzConfig()
 
 	addon:RegisterEvent("PLAYER_LOGIN", function()
 		addon.Flag:Update()

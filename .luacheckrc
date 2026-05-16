@@ -12,10 +12,12 @@ ignore = {
 	"111",
 	"112",
 	"122",
+	"113/LS.*", -- Accessing an undefined global variable starting with LS
 	"211/_G", -- Unused local variable _G
 	"211/C",  -- Unused local variable C
 	"211/D",  -- Unused local variable D
 	"211/L",  -- Unused local variable L
+	"432", -- Shadowing an upvalue argument
 }
 
 globals = {
@@ -29,14 +31,17 @@ globals = {
 
 read_globals = {
 	"ActionStatus",
+	"ActionStatus_DisplayMessage",
 	"AddonCompartmentFrame",
 	"C_AddOns",
 	"C_DelvesUI",
 	"C_EditMode",
+	"C_EncodingUtil",
 	"C_Map",
 	"C_PvP",
 	"C_Timer",
 	"ColorMixin",
+	"CopyTable",
 	"CreateFrame",
 	"CreateVector2D",
 	"DifficultyUtil",
@@ -48,7 +53,9 @@ read_globals = {
 	"FrameUtil",
 	"GameTimeFrame",
 	"GameTooltip",
+	"GetClientDisplayExpansionLevel",
 	"GetDifficultyInfo",
+	"GetFrameMetatable",
 	"GetGameTime",
 	"GetInstanceInfo",
 	"GetLocale",
@@ -62,13 +69,17 @@ read_globals = {
 	"MinimapCompassTexture",
 	"MinimapZoneText",
 	"Mixin",
+	"PanelTemplates_SetNumTabs",
+	"PanelTemplates_SetTab",
 	"ScrollingFontMixin",
 	"ScrollUtil",
 	"Settings",
+	"SettingsPanel",
 	"tContains",
 	"tDeleteItem",
 	"TimeManagerClockButton",
 	"TimeManagerClockTicker",
 	"UIParent",
+	"UISpecialFrames",
 	"UnitPosition",
 }

@@ -7,3 +7,5 @@ local L = addon.L
 local _G = getfenv(0)
 
 if GetLocale() ~= "frFR" then return end
+
+L["EXPORT"] = "Exporter"

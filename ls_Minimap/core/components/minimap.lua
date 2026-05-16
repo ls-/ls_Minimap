@@ -99,10 +99,6 @@ do
 end
 
 function addon.Minimap:Create()
-	if not C_AddOns.IsAddOnLoaded("Blizzard_TimeManager") then
-		C_AddOns.LoadAddOn("Blizzard_TimeManager")
-	end
-
 	hooksecurefunc(MinimapCluster, "SetSize", function()
 		local info = MINIMAP_INFO[addon:GetLayout().size]
 
@@ -210,20 +206,22 @@ function addon.Minimap:Create()
 	MinimapZoneText:SetJustifyH("LEFT")
 	MinimapZoneText:SetJustifyV("MIDDLE")
 
-	TimeManagerClockButton:ClearAllPoints()
-	TimeManagerClockButton:SetPoint("TOPRIGHT", MinimapCluster.BorderTop, "TOPRIGHT", -4, 0)
+	EventUtil.ContinueOnAddOnLoaded("Blizzard_TimeManager", function()
+		TimeManagerClockButton:ClearAllPoints()
+		TimeManagerClockButton:SetPoint("TOPRIGHT", MinimapCluster.BorderTop, "TOPRIGHT", -4, 0)
 
-	TimeManagerClockTicker:SetSize(0, 0)
-	TimeManagerClockTicker:ClearAllPoints()
-	TimeManagerClockTicker:SetPoint("TOPRIGHT", 0, 0)
-	TimeManagerClockTicker:SetPoint("BOTTOMLEFT", 0, 0)
-	TimeManagerClockTicker:SetFontObject("GameFontNormal")
-	TimeManagerClockTicker:SetJustifyH("RIGHT")
-	TimeManagerClockTicker:SetJustifyV("MIDDLE")
-	TimeManagerClockTicker:SetTextColor(1, 1, 1)
+		TimeManagerClockTicker:SetSize(0, 0)
+		TimeManagerClockTicker:ClearAllPoints()
+		TimeManagerClockTicker:SetPoint("TOPRIGHT", 0, 0)
+		TimeManagerClockTicker:SetPoint("BOTTOMLEFT", 0, 0)
+		TimeManagerClockTicker:SetFontObject("GameFontNormal")
+		TimeManagerClockTicker:SetJustifyH("RIGHT")
+		TimeManagerClockTicker:SetJustifyV("MIDDLE")
+		TimeManagerClockTicker:SetTextColor(1, 1, 1)
 
-	GameTimeFrame:ClearAllPoints()
-	GameTimeFrame:SetPoint("TOPLEFT", MinimapCluster.BorderTop, "TOPRIGHT", 4, 0)
+		GameTimeFrame:ClearAllPoints()
+		GameTimeFrame:SetPoint("TOPLEFT", MinimapCluster.BorderTop, "TOPRIGHT", 4, 0)
+	end)
 
 	for _, obj in next, {
 			Minimap.ZoomIn,

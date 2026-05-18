@@ -92,7 +92,7 @@ local flag_proto = {}
 
 local deferredUpdate, timer
 
-function flag_proto:OnEvent(event)
+function flag_proto:OnEvent()
 	if not deferredUpdate then
 		-- it's static, so avoid creating it again and again
 		deferredUpdate = function()

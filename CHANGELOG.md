@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 120005.02
+
+- Fixed an issue where profile import/export leaked into other addons. TIL.
+
 ## Version 120005.01
 
 - Added 12.0.5 support.

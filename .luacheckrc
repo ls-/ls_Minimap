@@ -9,9 +9,8 @@ exclude_files = {
 }
 
 ignore = {
-	"111",
-	"112",
-	"122",
+	"111/LS.*", -- Setting an undefined global variable starting with LS
+	"112/LS.*", -- Mutating an undefined global variable starting with LS
 	"113/LS.*", -- Accessing an undefined global variable starting with LS
 	"211/_G", -- Unused local variable _G
 	"211/C",  -- Unused local variable C

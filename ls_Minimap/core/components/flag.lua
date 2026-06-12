@@ -234,8 +234,8 @@ function addon.Flag:Create()
 
 	FrameUtil.RegisterFrameForEvents(flag, EVENTS)
 
-	flag.info = FLAG_INFO[C.db.profile.layouts["*"].size]
-	flag.iconInfo = FLAG_ICON_INFO[C.db.profile.layouts["*"].size]
+	flag.info = FLAG_INFO[D.profile.layouts["*"].size]
+	flag.iconInfo = FLAG_ICON_INFO[D.profile.layouts["*"].size]
 
 	return flag
 end

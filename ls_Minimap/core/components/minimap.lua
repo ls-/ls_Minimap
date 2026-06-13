@@ -321,9 +321,45 @@ function addon.Minimap:UpdateLayout(size, shape)
 	end
 
 	self:UpdateLandingPagebutton()
+	self:UpdateAddonCompartment()
+	self:UpdateMail()
 end
 
 function addon.Minimap:UpdateLandingPagebutton()
 	ExpansionLandingPageMinimapButton:ClearAllPoints()
 	ExpansionLandingPageMinimapButton:SetPoint(unpack(LANDING_PAGE_POINTS[addon:GetLayout().size][addon:GetLayout().shape]))
+end
+
+function addon.Minimap:UpdateAddonCompartment()
+	local addons = addon:GetLayout().addons
+
+	AddonCompartmentFrame:SetFrameLevel(Minimap:GetFrameLevel() + 1)
+	AddonCompartmentFrame:ClearAllPoints()
+
+	if addons.override_point then
+		AddonCompartmentFrame:SetPoint("CENTER", addons.point[1], addons.point[2])
+	else
+		if isHeaderUnderneath then
+			AddonCompartmentFrame:SetPoint("BOTTOMLEFT", GameTimeFrame, "TOPLEFT")
+		else
+			AddonCompartmentFrame:SetPoint("TOPLEFT", GameTimeFrame, "BOTTOMLEFT")
+		end
+	end
+end
+
+function addon.Minimap:UpdateMail()
+	local mail = addon:GetLayout().mail
+
+	MinimapCluster.IndicatorFrame:SetFrameLevel(Minimap:GetFrameLevel() + 1)
+	MinimapCluster.IndicatorFrame:ClearAllPoints()
+
+	if mail.override_point then
+		MinimapCluster.IndicatorFrame:SetPoint("CENTER", mail.point[1], mail.point[2])
+	else
+		if isHeaderUnderneath then
+			MinimapCluster.IndicatorFrame:SetPoint("BOTTOMRIGHT", MinimapCluster.Tracking, "TOPRIGHT")
+		else
+			MinimapCluster.IndicatorFrame:SetPoint("TOPRIGHT", MinimapCluster.Tracking, "BOTTOMRIGHT")
+		end
+	end
 end

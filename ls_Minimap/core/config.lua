@@ -235,16 +235,6 @@ function addon:CreateEditModeConfig()
 
 					addon.Coords:Enable(value)
 				end
-
-					if value then
-						LEM:EnableSystemSetting(Enum.EditModeSystem.Minimap, _G.BACKGROUND)
-						LEM:EnableSystemSetting(Enum.EditModeSystem.Minimap, L["X_OFFSET"])
-						LEM:EnableSystemSetting(Enum.EditModeSystem.Minimap, L["Y_OFFSET"])
-					else
-						LEM:DisableSystemSetting(Enum.EditModeSystem.Minimap, _G.BACKGROUND)
-						LEM:DisableSystemSetting(Enum.EditModeSystem.Minimap, L["X_OFFSET"])
-						LEM:DisableSystemSetting(Enum.EditModeSystem.Minimap, L["Y_OFFSET"])
-					end
 			end,
 		},
 		{

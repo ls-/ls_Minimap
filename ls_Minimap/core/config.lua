@@ -134,6 +134,7 @@ function addon:CreateEditModeConfig()
 	LEM:AddSystemSettings(Enum.EditModeSystem.Minimap, {
 		{
 			name = _G.HUD_EDIT_MODE_SETTING_MINIMAP_SIZE,
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].size),
 			kind = LEM.SettingType.Slider,
 			default = D.profile.layouts["*"].size,
 			get = function(layoutName)
@@ -194,6 +195,7 @@ function addon:CreateEditModeConfig()
 		},
 		{
 			name = L["AUTO_ZOOM_OUT"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].auto_zoom),
 			kind = LEM.SettingType.Slider,
 			default = D.profile.layouts["*"].auto_zoom,
 			get = function(layoutName)
@@ -260,6 +262,7 @@ function addon:CreateEditModeConfig()
 		},
 		{
 			name = L["X_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].coords.point[1]),
 			kind = LEM.SettingType.Slider,
 			hidden = function()
 				return not C.db.global.settings.coords
@@ -284,6 +287,7 @@ function addon:CreateEditModeConfig()
 		},
 		{
 			name = L["Y_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].coords.point[2]),
 			kind = LEM.SettingType.Slider,
 			hidden = function()
 				return not C.db.global.settings.coords
@@ -348,6 +352,7 @@ function addon:CreateEditModeConfig()
 		},
 		{
 			name = L["X_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].mail.point[1]),
 			kind = LEM.SettingType.Slider,
 			hidden = function()
 				return not C.db.global.settings.mail
@@ -372,6 +377,7 @@ function addon:CreateEditModeConfig()
 		},
 		{
 			name = L["Y_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].mail.point[2]),
 			kind = LEM.SettingType.Slider,
 			hidden = function()
 				return not C.db.global.settings.mail
@@ -436,6 +442,7 @@ function addon:CreateEditModeConfig()
 		},
 		{
 			name = L["X_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].addons.point[1]),
 			kind = LEM.SettingType.Slider,
 			hidden = function()
 				return not C.db.global.settings.addons
@@ -460,6 +467,7 @@ function addon:CreateEditModeConfig()
 		},
 		{
 			name = L["Y_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].addons.point[2]),
 			kind = LEM.SettingType.Slider,
 			hidden = function()
 				return not C.db.global.settings.addons

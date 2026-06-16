@@ -102,6 +102,8 @@ function addon:CreateEditModeConfig()
 		local layout = C.db.profile.layouts[layoutName]
 
 		addon.Minimap:UpdateLayout(layout.size, layout.shape)
+		addon.Minimap:UpdateAddonCompartment()
+		addon.Minimap:UpdateMail()
 
 		Minimap:UpdateBorderColor()
 

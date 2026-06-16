@@ -6,5 +6,6 @@ local _G = getfenv(0)
 
 -- Mine
 addon.CHANGELOG = [[
-- Fixed an issue where profile import/export leaked into other addons. TIL.
+- Added support for 12.0.7.
+- Added a set option to adjust mail and addon compartment button's positions. This a temporary change until I figure out what I wanna do with the minimap header and all those buttons.
 ]]

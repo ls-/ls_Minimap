@@ -1,6 +1,6 @@
-## Interface: 120005
+## Interface: 120007
 ## Author: lightspark
-## Version: 120005.02
+## Version: 120007.01
 ## Title: LS: |cffff8243Minimap|r
 ## Notes: Adventurers need a map to do it!
 ## IconTexture: Interface\AddOns\ls_Minimap\assets\logo-64

@@ -13,6 +13,7 @@ L["WAGO"] = "Wago"
 L["WOWINTERFACE"] = "WoWInterface"
 L["INFO"] = D.global.colors.addon:WrapTextInColorCode(_G.INFO)
 
+L["DEFAULT_VALUE"] = _G.DEFAULT .. _G. HEADER_COLON .. " |cffffffff%s|r"
 L["IMPORT"] = _G.HUD_EDIT_MODE_IMPORT_LAYOUT
 
 -- Require translation

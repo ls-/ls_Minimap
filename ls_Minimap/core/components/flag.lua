@@ -88,6 +88,17 @@ local function getDifficultyName(ID)
 	return DifficultyUtil.GetDifficultyName(ID) or DIFFICULTY_NAMES[ID]
 end
 
+local WORLD_TIER_DIFFICULTY_NAMES = {
+	[Enum.WorldTierDifficulty.Heroic] = _G.WORLD_TIER_HEROIC,
+	[Enum.WorldTierDifficulty.Mythic] = _G.WORLD_TIER_MYTHIC,
+}
+
+local function getWorldTierDifficulty()
+	local id = C_DelvesUI.GetWorldTierDifficultyForActivePlayer()
+
+	return id, WORLD_TIER_DIFFICULTY_NAMES[id]
+end
+
 local flag_proto = {}
 
 local deferredUpdate, timer
@@ -160,8 +171,24 @@ function flag_proto:Update()
 	self.maxPlayers = nil
 	self:Hide()
 
-	local instanceName, instanceType, difficultyID, _, maxPlayers = GetInstanceInfo()
-	if instanceType == "raid" or instanceType == "party" then
+	local instanceName, instanceType, difficultyID, _, maxPlayers, _, _, _, _, _, hasWorldTier = GetInstanceInfo()
+	if hasWorldTier then
+		local id, difficultyName = getWorldTierDifficulty()
+		if not difficultyName then return end
+
+		self.instanceName = instanceName
+		self.difficultyID = id
+		self.difficultyName = difficultyName
+		self.maxPlayers = maxPlayers
+
+		if id == Enum.WorldTierDifficulty.Heroic then
+			self:SetIcon("heroic")
+		elseif id == Enum.WorldTierDifficulty.Mythic then
+			self:SetIcon("mythic")
+		end
+
+		self:Show()
+	elseif instanceType == "raid" or instanceType == "party" then
 		local _, _, isHeroic, isChallengeMode, displayHeroic, displayMythic, _, isLFR = GetDifficultyInfo(difficultyID)
 
 		self.instanceName = instanceName
@@ -234,8 +261,8 @@ function addon.Flag:Create()
 
 	FrameUtil.RegisterFrameForEvents(flag, EVENTS)
 
-	flag.info = FLAG_INFO[C.db.profile.layouts["*"].size]
-	flag.iconInfo = FLAG_ICON_INFO[C.db.profile.layouts["*"].size]
+	flag.info = FLAG_INFO[D.profile.layouts["*"].size]
+	flag.iconInfo = FLAG_ICON_INFO[D.profile.layouts["*"].size]
 
 	return flag
 end

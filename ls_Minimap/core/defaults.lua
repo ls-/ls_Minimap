@@ -12,7 +12,7 @@ function addon:GetLayout()
 end
 
 function addon:GetDefaultLayout()
-	return C.db.profile.layouts["*"]
+	return D.profile.layouts["*"]
 end
 
 local function rgb(...)
@@ -30,6 +30,8 @@ D.global = {
 	},
 	settings = { -- used by expanders
 		coords = false,
+		mail = false,
+		addons = false,
 	},
 }
 
@@ -44,6 +46,14 @@ D.profile = {
 				enabled = false,
 				background = true,
 				point = {0, -150},
+			},
+			mail = {
+				override_point = false,
+				point = {-106, 94},
+			},
+			addons = {
+				override_point = false,
+				point = {108, 94},
 			},
 		},
 	},

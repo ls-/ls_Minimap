@@ -102,6 +102,8 @@ function addon:CreateEditModeConfig()
 		local layout = C.db.profile.layouts[layoutName]
 
 		addon.Minimap:UpdateLayout(layout.size, layout.shape)
+		addon.Minimap:UpdateAddonCompartment()
+		addon.Minimap:UpdateMail()
 
 		Minimap:UpdateBorderColor()
 
@@ -134,6 +136,7 @@ function addon:CreateEditModeConfig()
 	LEM:AddSystemSettings(Enum.EditModeSystem.Minimap, {
 		{
 			name = _G.HUD_EDIT_MODE_SETTING_MINIMAP_SIZE,
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].size),
 			kind = LEM.SettingType.Slider,
 			default = D.profile.layouts["*"].size,
 			get = function(layoutName)
@@ -194,6 +197,7 @@ function addon:CreateEditModeConfig()
 		},
 		{
 			name = L["AUTO_ZOOM_OUT"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].auto_zoom),
 			kind = LEM.SettingType.Slider,
 			default = D.profile.layouts["*"].auto_zoom,
 			get = function(layoutName)
@@ -235,16 +239,6 @@ function addon:CreateEditModeConfig()
 
 					addon.Coords:Enable(value)
 				end
-
-					if value then
-						LEM:EnableSystemSetting(Enum.EditModeSystem.Minimap, _G.BACKGROUND)
-						LEM:EnableSystemSetting(Enum.EditModeSystem.Minimap, L["X_OFFSET"])
-						LEM:EnableSystemSetting(Enum.EditModeSystem.Minimap, L["Y_OFFSET"])
-					else
-						LEM:DisableSystemSetting(Enum.EditModeSystem.Minimap, _G.BACKGROUND)
-						LEM:DisableSystemSetting(Enum.EditModeSystem.Minimap, L["X_OFFSET"])
-						LEM:DisableSystemSetting(Enum.EditModeSystem.Minimap, L["Y_OFFSET"])
-					end
 			end,
 		},
 		{
@@ -270,6 +264,7 @@ function addon:CreateEditModeConfig()
 		},
 		{
 			name = L["X_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].coords.point[1]),
 			kind = LEM.SettingType.Slider,
 			hidden = function()
 				return not C.db.global.settings.coords
@@ -294,6 +289,7 @@ function addon:CreateEditModeConfig()
 		},
 		{
 			name = L["Y_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].coords.point[2]),
 			kind = LEM.SettingType.Slider,
 			hidden = function()
 				return not C.db.global.settings.coords
@@ -328,6 +324,186 @@ function addon:CreateEditModeConfig()
 			end,
 			set = function(_, value)
 				C.db.global.settings.coords = value
+			end,
+		},
+		{
+			name = _G.MAIL_LABEL,
+			kind = LEM.SettingType.Divider,
+			-- hideLabel = true,
+			hidden = function()
+				return not C.db.global.settings.mail
+			end,
+		},
+		{
+			name = _G.ENABLE,
+			kind = LEM.SettingType.Checkbox,
+			hidden = function()
+				return not C.db.global.settings.mail
+			end,
+			default = D.profile.layouts["*"].mail.override_point,
+			get = function(layoutName)
+				return C.db.profile.layouts[layoutName].mail.override_point
+			end,
+			set = function(layoutName, value)
+				if C.db.profile.layouts[layoutName].mail.override_point ~= value then
+					C.db.profile.layouts[layoutName].mail.override_point = value
+
+					addon.Minimap:UpdateMail()
+				end
+			end,
+		},
+		{
+			name = L["X_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].mail.point[1]),
+			kind = LEM.SettingType.Slider,
+			hidden = function()
+				return not C.db.global.settings.mail
+			end,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].mail.override_point
+			end,
+			default = D.profile.layouts["*"].mail.point[1],
+			get = function(layoutName)
+				return C.db.profile.layouts[layoutName].mail.point[1]
+			end,
+			set = function(layoutName, value)
+				if C.db.profile.layouts[layoutName].mail.point[1] ~= value then
+					C.db.profile.layouts[layoutName].mail.point[1] = value
+
+					addon.Minimap:UpdateMail()
+				end
+			end,
+			minValue = -192,
+			maxValue = 192,
+			valueStep = 1,
+		},
+		{
+			name = L["Y_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].mail.point[2]),
+			kind = LEM.SettingType.Slider,
+			hidden = function()
+				return not C.db.global.settings.mail
+			end,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].mail.override_point
+			end,
+			default = D.profile.layouts["*"].mail.point[2],
+			get = function(layoutName)
+				return C.db.profile.layouts[layoutName].mail.point[2]
+			end,
+			set = function(layoutName, value)
+				if C.db.profile.layouts[layoutName].mail.point[2] ~= value then
+					C.db.profile.layouts[layoutName].mail.point[2] = value
+
+					addon.Minimap:UpdateMail()
+				end
+			end,
+			minValue = -192,
+			maxValue = 192,
+			valueStep = 1,
+		},
+		{
+			name = "DNT Mail Settings Expander",
+			kind = LEM.SettingType.Expander,
+			expandedLabel = L["COLLAPSE_OPTIONS"],
+			collapsedLabel = _G.MAIL_LABEL,
+			appendArrow = true,
+			default = D.global.settings.mail,
+			get = function()
+				return C.db.global.settings.mail
+			end,
+			set = function(_, value)
+				C.db.global.settings.mail = value
+			end,
+		},
+		{
+			name = _G.ADDONS,
+			kind = LEM.SettingType.Divider,
+			-- hideLabel = true,
+			hidden = function()
+				return not C.db.global.settings.addons
+			end,
+		},
+		{
+			name = _G.ENABLE,
+			kind = LEM.SettingType.Checkbox,
+			hidden = function()
+				return not C.db.global.settings.addons
+			end,
+			default = D.profile.layouts["*"].addons.override_point,
+			get = function(layoutName)
+				return C.db.profile.layouts[layoutName].addons.override_point
+			end,
+			set = function(layoutName, value)
+				if C.db.profile.layouts[layoutName].addons.override_point ~= value then
+					C.db.profile.layouts[layoutName].addons.override_point = value
+
+					addon.Minimap:UpdateAddonCompartment()
+				end
+			end,
+		},
+		{
+			name = L["X_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].addons.point[1]),
+			kind = LEM.SettingType.Slider,
+			hidden = function()
+				return not C.db.global.settings.addons
+			end,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].addons.override_point
+			end,
+			default = D.profile.layouts["*"].addons.point[1],
+			get = function(layoutName)
+				return C.db.profile.layouts[layoutName].addons.point[1]
+			end,
+			set = function(layoutName, value)
+				if C.db.profile.layouts[layoutName].addons.point[1] ~= value then
+					C.db.profile.layouts[layoutName].addons.point[1] = value
+
+					addon.Minimap:UpdateAddonCompartment()
+				end
+			end,
+			minValue = -192,
+			maxValue = 192,
+			valueStep = 1,
+		},
+		{
+			name = L["Y_OFFSET"],
+			desc = L["DEFAULT_VALUE"]:format(D.profile.layouts["*"].addons.point[2]),
+			kind = LEM.SettingType.Slider,
+			hidden = function()
+				return not C.db.global.settings.addons
+			end,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].addons.override_point
+			end,
+			default = D.profile.layouts["*"].addons.point[2],
+			get = function(layoutName)
+				return C.db.profile.layouts[layoutName].addons.point[2]
+			end,
+			set = function(layoutName, value)
+				if C.db.profile.layouts[layoutName].addons.point[2] ~= value then
+					C.db.profile.layouts[layoutName].addons.point[2] = value
+
+					addon.Minimap:UpdateAddonCompartment()
+				end
+			end,
+			minValue = -192,
+			maxValue = 192,
+			valueStep = 1,
+		},
+		{
+			name = "DNT AddOns Settings Expander",
+			kind = LEM.SettingType.Expander,
+			expandedLabel = L["COLLAPSE_OPTIONS"],
+			collapsedLabel = _G.ADDONS,
+			appendArrow = true,
+			default = D.global.settings.addons,
+			get = function()
+				return C.db.global.settings.addons
+			end,
+			set = function(_, value)
+				C.db.global.settings.addons = value
 			end,
 		},
 	})

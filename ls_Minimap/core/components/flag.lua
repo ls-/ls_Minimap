@@ -75,8 +75,7 @@ local EVENTS = {
 }
 
 local function scenarioIsDelve()
-	local _, _, _, mapID = UnitPosition("player")
-	return C_DelvesUI.HasActiveDelve(mapID)
+	return C_DelvesUI.HasActiveDelve() and not C_DelvesUI.IsInLair()
 end
 
 local DIFFICULTY_NAMES = {

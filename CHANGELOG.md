@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 120100.01
+
+- Added 12.1.0 support.
+
 ## Version 120007.01
 
 - Added support for 12.0.7.
